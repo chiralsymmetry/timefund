@@ -6,5 +6,14 @@ public class Activity
     public string Icon { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
-    public double Multiplier { get; set; } = 0;
+    public double Multiplier { get; set; }
+
+    public Activity(int id = 0, string icon = "", string title = "", string description = "", double multiplier = 0)
+    {
+        Id = id;
+        Icon = icon;
+        Title = title;
+        Description = description;
+        Multiplier = multiplier;
+    }
 }
