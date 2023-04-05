@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using TimeFund.DataAccess;
 using TimeFund.Models;
 using TimeFund.ViewModels;
+using TimeFund.Views;
 
 namespace TimeFund;
 
@@ -33,7 +34,8 @@ public static class MauiProgram
 
 		builder.Services.AddSingleton(typeof(IDataAccess), dataAccess);
 		builder.Services.AddSingleton<TimeFundViewModel>();
+		builder.Services.AddSingleton<TimeFundPage>();
 
-		return builder.Build();
+        return builder.Build();
 	}
 }

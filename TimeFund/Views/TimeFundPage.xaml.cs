@@ -1,9 +1,12 @@
+using TimeFund.ViewModels;
+
 namespace TimeFund.Views;
 
 public partial class TimeFundPage : ContentPage
 {
-	public TimeFundPage()
+	public TimeFundPage(TimeFundViewModel timeFundViewModel)
 	{
 		InitializeComponent();
+		BindingContext = timeFundViewModel;
 	}
 }
