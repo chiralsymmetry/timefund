@@ -23,16 +23,59 @@ public static class MauiProgram
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
+		var running = new Activity(0, "🏃", "Running", "Running is a great way to get in shape.", 1.0);
+		var lifting = new Activity(0, "🏋️", "Weightlifting", "Weightlifting is a great way to get in shape.", 2.0);
+		var swimming = new Activity(0, "🏊", "Swimming", "Swimming is a great way to get in shape.", 1.5);
+		var videogames = new Activity(0, "🎮", "Video Games", "Video games are a great way to relax.", -1.0);
+		var tv = new Activity(0, "📺", "TV", "TV is a great way to relax.", -1.5);
+		var phone = new Activity(0, "📱", "Phone", "Phone is a great way to relax.", -2.0);
 
-		var dataAccess = new MemoryDataAccess();
-		dataAccess.InsertActivityAsync(new Activity(0, "🏃", "Running", "Running is a great way to get in shape.", 1.0)).Wait();
-		dataAccess.InsertActivityAsync(new Activity(0, "🏋️", "Weightlifting", "Weightlifting is a great way to get in shape.", 2.0)).Wait();
-		dataAccess.InsertActivityAsync(new Activity(0, "🏊", "Swimming", "Swimming is a great way to get in shape.", 1.5)).Wait();
-		dataAccess.InsertActivityAsync(new Activity(0, "🎮", "Video Games", "Video games are a great way to relax.", -1.0)).Wait();
-		dataAccess.InsertActivityAsync(new Activity(0, "📺", "TV", "TV is a great way to relax.", -1.5)).Wait();
-		dataAccess.InsertActivityAsync(new Activity(0, "📱", "Phone", "Phone is a great way to relax.", -2.0)).Wait();
+        var dataAccess = new MemoryDataAccess();
+        dataAccess.InsertActivityAsync(running).Wait();
+        dataAccess.InsertActivityAsync(lifting).Wait();
+        dataAccess.InsertActivityAsync(swimming).Wait();
+        dataAccess.InsertActivityAsync(videogames).Wait();
+        dataAccess.InsertActivityAsync(tv).Wait();
+        dataAccess.InsertActivityAsync(phone).Wait();
 
-		builder.Services.AddSingleton(typeof(IDataAccess), dataAccess);
+        var time = DateTime.UtcNow.AddDays(-3);
+        // Day 1
+        dataAccess.InsertUsageLog(running, time, TimeSpan.FromHours(0.75)).Wait();
+        time += TimeSpan.FromHours(0.75 + 1.27);
+        dataAccess.InsertUsageLog(lifting, time, TimeSpan.FromHours(1.23)).Wait();
+        time += TimeSpan.FromHours(1.23 + 2.58);
+        dataAccess.InsertUsageLog(swimming, time, TimeSpan.FromHours(1.51)).Wait();
+        time += TimeSpan.FromHours(1.51 + 2.12);
+        dataAccess.InsertUsageLog(videogames, time, TimeSpan.FromHours(2.35)).Wait();
+        time += TimeSpan.FromHours(2.35 + 1.46);
+        dataAccess.InsertUsageLog(tv, time, TimeSpan.FromHours(1.73)).Wait();
+        time += TimeSpan.FromHours(1.73 + 9.64);
+        // Day 2
+        dataAccess.InsertUsageLog(running, time, TimeSpan.FromHours(0.85)).Wait();
+        time += TimeSpan.FromHours(0.85 + 1.75);
+        dataAccess.InsertUsageLog(lifting, time, TimeSpan.FromHours(1.30)).Wait();
+        time += TimeSpan.FromHours(1.30 + 2.58);
+        dataAccess.InsertUsageLog(swimming, time, TimeSpan.FromHours(1.58)).Wait();
+        time += TimeSpan.FromHours(1.58 + 2.09);
+        dataAccess.InsertUsageLog(phone, time, TimeSpan.FromHours(2.41)).Wait();
+        time += TimeSpan.FromHours(2.41 + 1.53);
+        dataAccess.InsertUsageLog(tv, time, TimeSpan.FromHours(1.75)).Wait();
+        time += TimeSpan.FromHours(1.75 + 11.41);
+        // Day 3
+        dataAccess.InsertUsageLog(running, time, TimeSpan.FromHours(0.65)).Wait();
+        time += TimeSpan.FromHours(0.65 + 2.25);
+        dataAccess.InsertUsageLog(lifting, time, TimeSpan.FromHours(1.13)).Wait();
+        time += TimeSpan.FromHours(1.13 + 2.51);
+        dataAccess.InsertUsageLog(swimming, time, TimeSpan.FromHours(1.59)).Wait();
+        time += TimeSpan.FromHours(1.59 + 1.75);
+        dataAccess.InsertUsageLog(videogames, time, TimeSpan.FromHours(1.87)).Wait();
+        time += TimeSpan.FromHours(1.87 + 2.25);
+        dataAccess.InsertUsageLog(phone, time, TimeSpan.FromHours(2.15)).Wait();
+        time += TimeSpan.FromHours(2.15 + 1.75);
+        dataAccess.InsertUsageLog(tv, time, TimeSpan.FromHours(1.40)).Wait();
+        time += TimeSpan.FromHours(1.40);
+
+        builder.Services.AddSingleton(typeof(IDataAccess), dataAccess);
 		builder.Services.AddSingleton<TimeFundViewModel>();
 		builder.Services.AddSingleton<TimeFundPage>();
 

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:TimeFund"
              xmlns:models="clr-namespace:TimeFund.Models"
+             xmlns:converters="clr-namespace:TimeFund.Converters"
              x:Class="TimeFund.App">
     <Application.Resources>
         <ResourceDictionary>
@@ -10,6 +11,7 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <converters:TimeSpanConverter x:Key="timeSpanConverter" />
             <DataTemplate x:Key="ActivityTemplate" x:DataType="models:UIActivity">
                 <Border Margin="10,2,10,2">
                     <Grid RowDefinitions="*,*" ColumnDefinitions="50,*" HeightRequest="40">
@@ -28,7 +30,7 @@
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding Usage, StringFormat='{}{0:hh\\:mm\\:ss}'}" />
+                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding Usage, Converter={StaticResource timeSpanConverter}}" />
                     </Grid>
                 </Border>
             </DataTemplate>

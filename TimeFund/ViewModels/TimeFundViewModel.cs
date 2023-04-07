@@ -34,10 +34,14 @@ public partial class TimeFundViewModel : ObservableObject
     private async Task LoadActivities()
     {
         var activities = await dataAccess.GetAllActivitiesAsync();
+        var yesterday = DateTime.UtcNow.AddDays(-1);
+        var today = DateTime.UtcNow;
         AllActivities.Clear();
         foreach (var activity in activities)
         {
-            AllActivities.Add(new(activity));
+            var totalUsage = await dataAccess.GetTotalUsageOverlappingIntervalForActivityAsync(activity, yesterday, today);
+            var uiActivity = new UIActivity(activity, totalUsage);
+            AllActivities.Add(uiActivity);
         }
     }
 

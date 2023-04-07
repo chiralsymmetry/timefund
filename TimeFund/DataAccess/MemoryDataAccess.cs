@@ -1,4 +1,5 @@
-﻿using TimeFund.Models;
+﻿using System.Linq;
+using TimeFund.Models;
 
 namespace TimeFund.DataAccess;
 
@@ -90,9 +91,9 @@ public class MemoryDataAccess : IDataAccess
         return Task.FromResult(usageLogs);
     }
 
-    public Task<IEnumerable<UsageLog>> GetAllUsageLogsForActivityInIntervalAsync(Activity activity, DateTime start, DateTime end)
+    public Task<IEnumerable<UsageLog>> GetAllUsageLogsOverlappingIntervalForActivityAsync(Activity activity, DateTime start, DateTime end)
     {
-        IEnumerable<UsageLog> usageLogs = storedUsageLogs.Values.Where(u => u.Activity == activity && u.StartTime >= start && u.EndTime <= end).ToList();
+        IEnumerable<UsageLog> usageLogs = storedUsageLogs.Values.Where(u => u.Activity == activity && u.StartTime <= end && start <= u.EndTime).ToList();
         return Task.FromResult(usageLogs);
     }
 
@@ -100,6 +101,16 @@ public class MemoryDataAccess : IDataAccess
     {
         var totalUsageInSeconds = storedUsageLogs.Values.Where(u => u.Activity == activity).Sum(u => u.Duration.TotalSeconds);
         var totalUsage = TimeSpan.FromSeconds(totalUsageInSeconds);
+        return Task.FromResult(totalUsage);
+    }
+
+    public Task<TimeSpan> GetTotalUsageOverlappingIntervalForActivityAsync(Activity activity, DateTime start, DateTime end)
+    {
+        var totalUsageInTicks = storedUsageLogs.Values
+            .Where(u => u.Activity == activity && u.StartTime <= end && start <= u.EndTime)
+            .Select(u => Math.Min(u.EndTime.Ticks, end.Ticks) - Math.Max(u.StartTime.Ticks, start.Ticks))
+            .Sum();
+        var totalUsage = TimeSpan.FromTicks(totalUsageInTicks);
         return Task.FromResult(totalUsage);
     }
 
@@ -136,9 +147,9 @@ public class MemoryDataAccess : IDataAccess
         return Task.FromResult(output);
     }
 
-    public Task<IEnumerable<UsageLog>> GetAllUsageLogsInIntervalAsync(DateTime start, DateTime end)
+    public Task<IEnumerable<UsageLog>> GetAllUsageLogsOverlappingIntervalAsync(DateTime start, DateTime end)
     {
-        IEnumerable<UsageLog> usageLogs = storedUsageLogs.Values.Where(u => u.StartTime >= start && u.EndTime <= end).ToList();
+        IEnumerable<UsageLog> usageLogs = storedUsageLogs.Values.Where(u => u.StartTime <= end && start <= u.EndTime).ToList();
         return Task.FromResult(usageLogs);
     }
 }
