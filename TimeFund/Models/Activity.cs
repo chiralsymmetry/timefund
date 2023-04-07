@@ -2,7 +2,6 @@
 
 public class Activity
 {
-    public static readonly Activity ZERO_ACTIVITY = new();
     public int Id { get; set; }
     public string Icon { get; set; }
     public string Title { get; set; }

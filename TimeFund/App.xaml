@@ -10,7 +10,7 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <DataTemplate x:Key="ActivityTemplate" x:DataType="models:Activity">
+            <DataTemplate x:Key="ActivityTemplate" x:DataType="models:UIActivity">
                 <Border Margin="10,2,10,2">
                     <Grid RowDefinitions="*,*" ColumnDefinitions="50,*" HeightRequest="40">
                         <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" HeightRequest="30">
@@ -18,8 +18,17 @@
                                 <FontImageSource Glyph="{Binding Icon}" Size="36" />
                             </Image.Source>
                         </Image>
-                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding Title}" />
-                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding Multiplier}" />
+                        <Label Grid.Row="0" Grid.Column="1">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Title}" />
+                                    <Span Text=" (" />
+                                    <Span Text="{Binding Multiplier, StringFormat='{0:F2}'}" />
+                                    <Span Text=")" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding Usage, StringFormat='{}{0:hh\\:mm\\:ss}'}" />
                     </Grid>
                 </Border>
             </DataTemplate>

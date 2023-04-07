@@ -2,9 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Threading;
 using TimeFund.DataAccess;
-using Activity = TimeFund.Models.Activity;
+using TimeFund.Models;
 
 namespace TimeFund.ViewModels;
 
@@ -12,13 +11,13 @@ public partial class TimeFundViewModel : ObservableObject
 {
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(TimerFormat))]
-    private TimeSpan timeFund = new();
-    public ObservableCollection<Activity> AllActivities { get; set; } = new();
-    public IEnumerable<Activity> NonNegativeActivities => AllActivities.Where(a => a.Multiplier >= 0).OrderByDescending(a => a.Multiplier);
-    public IEnumerable<Activity> NegativeActivities => AllActivities.Where(a => a.Multiplier < 0).OrderByDescending(a => a.Multiplier);
+    private TimeSpan currentTimeFund = new();
+    public ObservableCollection<UIActivity> AllActivities { get; set; } = new();
+    public IEnumerable<UIActivity> NonNegativeActivities => AllActivities.Where(a => a.Multiplier >= 0).OrderByDescending(a => a.Multiplier);
+    public IEnumerable<UIActivity> NegativeActivities => AllActivities.Where(a => a.Multiplier < 0).OrderByDescending(a => a.Multiplier);
     [ObservableProperty]
-    private Activity currentActivity = Activity.ZERO_ACTIVITY;
-    public string TimerFormat => $"{(int)TimeFund.TotalHours:D2}:{TimeFund.Minutes:D2}:{TimeFund.Seconds:D2}";
+    private UIActivity currentActivity = UIActivity.ZERO_ACTIVITY;
+    public string TimerFormat => $"{(int)CurrentTimeFund.TotalHours:D2}:{CurrentTimeFund.Minutes:D2}:{CurrentTimeFund.Seconds:D2}";
     [ObservableProperty]
     private string timerButtonText = "Start";
 
@@ -38,7 +37,7 @@ public partial class TimeFundViewModel : ObservableObject
         AllActivities.Clear();
         foreach (var activity in activities)
         {
-            AllActivities.Add(activity);
+            AllActivities.Add(new(activity));
         }
     }
 
@@ -54,12 +53,13 @@ public partial class TimeFundViewModel : ObservableObject
                 stopwatch.Restart();
                 await Task.Delay(1000, TimerCancellationTokenSource.Token);
                 // Waiting 1000 ms... or less, if externally cancelled.
-                TimeFund += TimeSpan.FromSeconds(stopwatch.Elapsed.TotalSeconds * CurrentActivity.Multiplier);
-                if (CurrentActivity.Multiplier < 0 && TimeFund <= TimeSpan.Zero)
+                CurrentActivity.Usage += TimeSpan.FromSeconds(stopwatch.Elapsed.TotalSeconds);
+                CurrentTimeFund += TimeSpan.FromSeconds(stopwatch.Elapsed.TotalSeconds * CurrentActivity.Multiplier);
+                if (CurrentActivity.Multiplier < 0 && CurrentTimeFund <= TimeSpan.Zero)
                 {
                     // TODO: Play alarm sound.
                     TimerCancellationTokenSource.Cancel();
-                    TimeFund = TimeSpan.Zero;
+                    CurrentTimeFund = TimeSpan.Zero;
                 }
             }
             stopwatch.Stop();
@@ -81,7 +81,7 @@ public partial class TimeFundViewModel : ObservableObject
         {
             StopTimer();
         }
-        else if (CurrentActivity != Activity.ZERO_ACTIVITY)
+        else if (CurrentActivity != UIActivity.ZERO_ACTIVITY)
         {
             StartTimer();
         }
@@ -91,6 +91,6 @@ public partial class TimeFundViewModel : ObservableObject
     private void ResetTimer()
     {
         StopTimer();
-        TimeFund = TimeSpan.Zero;
+        CurrentTimeFund = TimeSpan.Zero;
     }
 }
