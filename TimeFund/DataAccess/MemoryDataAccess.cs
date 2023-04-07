@@ -47,7 +47,7 @@ public class MemoryDataAccess : IDataAccess
     public Task<int> DeleteAsync(Activity activity)
     {
         int deletedRows = 0;
-        if (activities.Remove(deletedRows))
+        if (activities.Remove(activity.Id))
         {
             deletedRows = 1;
         }
