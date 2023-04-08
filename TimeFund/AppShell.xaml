@@ -7,9 +7,22 @@
     xmlns:views="clr-namespace:TimeFund.Views"
     Shell.FlyoutBehavior="Disabled">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate views:TimeFundPage}"
-        Route="MainPage" />
+    <TabBar>
+        <Tab Title="Home" Route="TimeFundPage">
+            <ShellContent Title="TimeFund"
+                          ContentTemplate="{DataTemplate views:TimeFundPage}"
+                          Route="TimeFundPage" />
+        </Tab>
+        <Tab Title="Activities" Route="AllActivitiesPage">
+            <ShellContent Title="Activities"
+                          ContentTemplate="{DataTemplate views:AllActivitiesPage}"
+                          Route="AllActivitiesPage" />
+        </Tab>
+        <Tab Title="History" Route="AllUsageLogsPage">
+            <ShellContent Title="History"
+                          ContentTemplate="{DataTemplate views:AllUsageLogsPage}"
+                          Route="AllUsageLogsPage" />
+        </Tab>
+    </TabBar>
 
 </Shell>
