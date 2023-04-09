@@ -8,11 +8,68 @@ public partial class UIActivity : ObservableObject
 
     private readonly Activity activity;
 
-    public int Id => activity.Id;
-    public string Icon => activity.Icon;
-    public string Title => activity.Title;
-    public string Description => activity.Description;
-    public double Multiplier => activity.Multiplier;
+    public int Id
+    {
+        get { return activity.Id; }
+        set
+        {
+            if (activity.Id != value)
+            {
+                OnPropertyChanged(nameof(Id));
+            }
+            activity.Id = value;
+        }
+    }
+
+    public string Icon
+    {
+        get { return activity.Icon; }
+        set
+        {
+            if (activity.Icon != value)
+            {
+                OnPropertyChanged(nameof(Icon));
+            }
+            activity.Icon = value;
+        }
+    }
+
+    public string Title
+    {
+        get { return activity.Title; }
+        set
+        {
+            if (activity.Title != value)
+            {
+                OnPropertyChanged(nameof(Title));
+            }
+            activity.Title = value;
+        }
+    }
+
+    public string Description
+    {
+        get { return activity.Description; }
+        set
+        {
+            if (activity.Description != value)
+            {
+                OnPropertyChanged(nameof(Description));
+            }
+            activity.Description = value; }
+    }
+
+    public double Multiplier
+    {
+        get { return activity.Multiplier; }
+        set
+        {
+            if (activity.Multiplier != value)
+            {
+                OnPropertyChanged(nameof(Multiplier));
+            }
+            activity.Multiplier = value; }
+    }
 
     [ObservableProperty]
     private TimeSpan usage;
