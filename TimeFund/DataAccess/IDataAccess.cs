@@ -14,7 +14,7 @@ public interface IDataAccess
     Task<UsageLog?> GetUsageLogAsync(int id);
     Task<IEnumerable<UsageLog>> GetAllUsageLogsForActivityAsync(Activity activity);
     Task<IEnumerable<UsageLog>> GetAllUsageLogsOverlappingIntervalForActivityAsync(Activity activity, DateTime start, DateTime end);
-    Task<TimeSpan> GetTotalUsageForActivity(Activity activity);
+    Task<TimeSpan> GetTotalUsageForActivityAsync(Activity activity);
     Task<TimeSpan> GetTotalUsageOverlappingIntervalForActivityAsync(Activity activity, DateTime start, DateTime end);
     Task<int> UpdateUsageLogAsync(UsageLog usageLog);
     Task<int> DeleteUsageLogAsync(UsageLog usageLog);

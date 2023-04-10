@@ -119,7 +119,7 @@ public class MemoryDataAccess : IDataAccess
         return Task.FromResult(output.AsEnumerable());
     }
 
-    public Task<TimeSpan> GetTotalUsageForActivity(Activity activity)
+    public Task<TimeSpan> GetTotalUsageForActivityAsync(Activity activity)
     {
         var totalUsageInSeconds = storedUsageLogs.Values.Where(u => u.Activity.Id == activity.Id).Sum(u => u.Duration.TotalSeconds);
         var totalUsage = TimeSpan.FromSeconds(totalUsageInSeconds);
