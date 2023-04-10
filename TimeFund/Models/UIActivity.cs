@@ -4,7 +4,7 @@ namespace TimeFund.Models;
 
 public partial class UIActivity : ObservableObject
 {
-    public static readonly UIActivity ZERO_ACTIVITY = new(new());
+    public static readonly UIActivity ZERO_UIACTIVITY = new(Activity.ZERO_ACTIVITY);
 
     private readonly Activity activity;
 

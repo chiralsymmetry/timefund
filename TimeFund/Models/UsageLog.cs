@@ -2,6 +2,8 @@
 
 public class UsageLog
 {
+    public static readonly UsageLog ZERO_USAGELOG = new(0, Activity.ZERO_ACTIVITY, DateTime.MinValue, TimeSpan.Zero);
+
     public int Id { get; set; }
     public Activity Activity { get; set; }
     public DateTime StartTime { get; set; }
