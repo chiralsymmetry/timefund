@@ -6,69 +6,69 @@ public partial class UIActivity : ObservableObject
 {
     public static readonly UIActivity ZERO_UIACTIVITY = new(Activity.ZERO_ACTIVITY);
 
-    private readonly Activity activity;
+    public readonly Activity Activity;
 
     public int Id
     {
-        get { return activity.Id; }
+        get { return Activity.Id; }
         set
         {
-            if (activity.Id != value)
+            if (Activity.Id != value)
             {
                 OnPropertyChanged(nameof(Id));
             }
-            activity.Id = value;
+            Activity.Id = value;
         }
     }
 
     public string Icon
     {
-        get { return activity.Icon; }
+        get { return Activity.Icon; }
         set
         {
-            if (activity.Icon != value)
+            if (Activity.Icon != value)
             {
                 OnPropertyChanged(nameof(Icon));
             }
-            activity.Icon = value;
+            Activity.Icon = value;
         }
     }
 
     public string Title
     {
-        get { return activity.Title; }
+        get { return Activity.Title; }
         set
         {
-            if (activity.Title != value)
+            if (Activity.Title != value)
             {
                 OnPropertyChanged(nameof(Title));
             }
-            activity.Title = value;
+            Activity.Title = value;
         }
     }
 
     public string Description
     {
-        get { return activity.Description; }
+        get { return Activity.Description; }
         set
         {
-            if (activity.Description != value)
+            if (Activity.Description != value)
             {
                 OnPropertyChanged(nameof(Description));
             }
-            activity.Description = value; }
+            Activity.Description = value; }
     }
 
     public double Multiplier
     {
-        get { return activity.Multiplier; }
+        get { return Activity.Multiplier; }
         set
         {
-            if (activity.Multiplier != value)
+            if (Activity.Multiplier != value)
             {
                 OnPropertyChanged(nameof(Multiplier));
             }
-            activity.Multiplier = value; }
+            Activity.Multiplier = value; }
     }
 
     [ObservableProperty]
@@ -76,13 +76,13 @@ public partial class UIActivity : ObservableObject
 
     public UIActivity(Activity activity, TimeSpan? startingUsage = null)
     {
-        this.activity = activity;
+        this.Activity = activity;
         usage = startingUsage ?? TimeSpan.Zero;
     }
 
     public UIActivity(int id, string icon, string title, string description, double multiplier, TimeSpan? startingUsage = null)
     {
-        activity = new(id, icon, title, description, multiplier);
+        Activity = new(id, icon, title, description, multiplier);
         usage = startingUsage ?? TimeSpan.Zero;
     }
 }
