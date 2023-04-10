@@ -11,7 +11,7 @@ public partial class AllActivitiesViewModel : ObservableObject
     private readonly IDataAccess dataAccess;
 
     public ObservableCollection<UIActivity> AllActivities { get; set; }
-    public UIActivity SelectedActivity { get; set; } = UIActivity.ZERO_ACTIVITY;
+    public UIActivity SelectedActivity { get; set; } = UIActivity.ZERO_UIACTIVITY;
 
     public AllActivitiesViewModel(IDataAccess dataAccess)
     {
@@ -45,7 +45,7 @@ public partial class AllActivitiesViewModel : ObservableObject
                 AllActivities.Add(new UIActivity(freshActivity, totalUsage));
             }
         }
-        SelectedActivity = UIActivity.ZERO_ACTIVITY;
+        SelectedActivity = UIActivity.ZERO_UIACTIVITY;
     }
 
     [RelayCommand]

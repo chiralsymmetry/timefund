@@ -16,7 +16,7 @@ public partial class TimeFundViewModel : ObservableObject
     public IEnumerable<UIActivity> NonNegativeActivities => AllActivities.Where(a => a.Multiplier >= 0).OrderByDescending(a => a.Multiplier);
     public IEnumerable<UIActivity> NegativeActivities => AllActivities.Where(a => a.Multiplier < 0).OrderByDescending(a => a.Multiplier);
     [ObservableProperty]
-    private UIActivity currentActivity = UIActivity.ZERO_ACTIVITY;
+    private UIActivity currentActivity = UIActivity.ZERO_UIACTIVITY;
 
     public string TimerFormat => $"{(int)CurrentTimeFund.TotalHours:D2}:{CurrentTimeFund.Minutes:D2}:{CurrentTimeFund.Seconds:D2}";
     [ObservableProperty]
@@ -61,7 +61,7 @@ public partial class TimeFundViewModel : ObservableObject
         }
         if (!AllActivities.Any(a => a.Id == CurrentActivity.Id))
         {
-            CurrentActivity = UIActivity.ZERO_ACTIVITY;
+            CurrentActivity = UIActivity.ZERO_UIACTIVITY;
         }
     }
 
@@ -106,7 +106,7 @@ public partial class TimeFundViewModel : ObservableObject
         {
             StopTimer();
         }
-        else if (CurrentActivity != UIActivity.ZERO_ACTIVITY && (CurrentActivity.Multiplier >= 0 || CurrentTimeFund > TimeSpan.Zero))
+        else if (CurrentActivity != UIActivity.ZERO_UIACTIVITY && (CurrentActivity.Multiplier >= 0 || CurrentTimeFund > TimeSpan.Zero))
         {
             StartTimer();
         }
