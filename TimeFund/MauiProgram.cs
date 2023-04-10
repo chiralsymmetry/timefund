@@ -80,6 +80,8 @@ public static class MauiProgram
 		builder.Services.AddSingleton<TimeFundPage>();
         builder.Services.AddSingleton<AllActivitiesViewModel>();
         builder.Services.AddSingleton<AllActivitiesPage>();
+        builder.Services.AddSingleton<AllUsageLogsViewModel>();
+        builder.Services.AddSingleton<AllUsageLogsPage>();
 
         return builder.Build();
 	}

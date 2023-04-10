@@ -34,6 +34,33 @@
                     </Grid>
                 </Border>
             </DataTemplate>
+            <DataTemplate x:Key="UsageLogTemplate" x:DataType="models:UsageLog">
+                <Border Margin="10,2,10,2">
+                    <Grid RowDefinitions="*,*,*" ColumnDefinitions="*" HeightRequest="60">
+                        <Label Grid.Row="0">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Activity.Title, Mode=OneWay}" FontAttributes="Bold" />
+                                    <Span Text=" (" />
+                                    <Span Text="{Binding Activity.Multiplier, Mode=OneWay, StringFormat='{0:F2}'}" />
+                                    <Span Text=")" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Grid.Row="1">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="From " />
+                                    <Span Text="{Binding StartTime, Mode=OneWay}" TextDecorations="Underline" />
+                                    <Span Text=" to " />
+                                    <Span Text="{Binding EndTime, Mode=OneWay}" TextDecorations="Underline" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Grid.Row="2" Text="{Binding Duration, Mode=OneWay, Converter={StaticResource timeSpanConverter}}" />
+                    </Grid>
+                </Border>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
