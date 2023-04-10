@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using TimeFund.Models;
+﻿using TimeFund.Models;
+using Activity = TimeFund.Models.Activity;
 
 namespace TimeFund.DataAccess;
 
@@ -24,8 +24,10 @@ public class MemoryDataAccess : IDataAccess
 
     public Task<Activity?> GetActivity(int id)
     {
-        if (storedActivities.TryGetValue(id, out Activity? output))
+        Activity? output = null;
+        if (storedActivities.TryGetValue(id, out Activity? existingActivity))
         {
+            output = new(existingActivity.Id, existingActivity.Icon, existingActivity.Title, existingActivity.Description, existingActivity.Multiplier);
         }
         return Task.FromResult(output);
     }
@@ -59,8 +61,12 @@ public class MemoryDataAccess : IDataAccess
 
     public Task<IEnumerable<Activity>> GetAllActivitiesAsync()
     {
-        IEnumerable<Activity> output = storedActivities.Values.ToList<Activity>();
-        return Task.FromResult(output);
+        List<Activity> output = new();
+        foreach (var item in storedActivities.Values)
+        {
+            output.Add(new(item.Id, item.Icon, item.Title, item.Description, item.Multiplier));
+        }
+        return Task.FromResult(output.AsEnumerable());
     }
 
     public Task<int> InsertUsageLog(Activity activity, DateTime end, TimeSpan duration)
@@ -79,27 +85,43 @@ public class MemoryDataAccess : IDataAccess
 
     public Task<UsageLog?> GetUsageLogAsync(int id)
     {
-        if (storedUsageLogs.TryGetValue(id, out UsageLog? output))
+        UsageLog? output = null;
+        if (storedUsageLogs.TryGetValue(id, out UsageLog? existingUsageLog))
         {
+            output = new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.EndTime, existingUsageLog.Duration);
         }
         return Task.FromResult(output);
     }
 
     public Task<IEnumerable<UsageLog>> GetAllUsageLogsForActivityAsync(Activity activity)
     {
-        IEnumerable<UsageLog> usageLogs = storedUsageLogs.Values.Where(u => u.Activity == activity).ToList();
-        return Task.FromResult(usageLogs);
+        List<UsageLog> output = new();
+        foreach (var existingUsageLog in storedUsageLogs.Values.Where(u => u.Activity.Id == activity.Id))
+        {
+            if (existingUsageLog.Activity.Id == activity.Id)
+            {
+                output.Add(new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.EndTime, existingUsageLog.Duration));
+            }
+        }
+        return Task.FromResult(output.AsEnumerable());
     }
 
     public Task<IEnumerable<UsageLog>> GetAllUsageLogsOverlappingIntervalForActivityAsync(Activity activity, DateTime start, DateTime end)
     {
-        IEnumerable<UsageLog> usageLogs = storedUsageLogs.Values.Where(u => u.Activity == activity && u.StartTime <= end && start <= u.EndTime).ToList();
-        return Task.FromResult(usageLogs);
+        List<UsageLog> output = new();
+        foreach (var existingUsageLog in storedUsageLogs.Values.Where(u => u.Activity.Id == activity.Id && u.StartTime <= end && start <= u.EndTime))
+        {
+            if (existingUsageLog.Activity.Id == activity.Id)
+            {
+                output.Add(new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.EndTime, existingUsageLog.Duration));
+            }
+        }
+        return Task.FromResult(output.AsEnumerable());
     }
 
     public Task<TimeSpan> GetTotalUsageForActivity(Activity activity)
     {
-        var totalUsageInSeconds = storedUsageLogs.Values.Where(u => u.Activity == activity).Sum(u => u.Duration.TotalSeconds);
+        var totalUsageInSeconds = storedUsageLogs.Values.Where(u => u.Activity.Id == activity.Id).Sum(u => u.Duration.TotalSeconds);
         var totalUsage = TimeSpan.FromSeconds(totalUsageInSeconds);
         return Task.FromResult(totalUsage);
     }
@@ -107,7 +129,7 @@ public class MemoryDataAccess : IDataAccess
     public Task<TimeSpan> GetTotalUsageOverlappingIntervalForActivityAsync(Activity activity, DateTime start, DateTime end)
     {
         var totalUsageInTicks = storedUsageLogs.Values
-            .Where(u => u.Activity == activity && u.StartTime <= end && start <= u.EndTime)
+            .Where(u => u.Activity.Id == activity.Id && u.StartTime <= end && start <= u.EndTime)
             .Select(u => Math.Min(u.EndTime.Ticks, end.Ticks) - Math.Max(u.StartTime.Ticks, start.Ticks))
             .Sum();
         var totalUsage = TimeSpan.FromTicks(totalUsageInTicks);
@@ -143,13 +165,21 @@ public class MemoryDataAccess : IDataAccess
 
     public Task<IEnumerable<UsageLog>> GetAllUsageLogsAsync()
     {
-        IEnumerable<UsageLog> output = storedUsageLogs.Values.ToList();
-        return Task.FromResult(output);
+        List<UsageLog> output = new();
+        foreach (var existingUsageLog in storedUsageLogs.Values)
+        {
+            output.Add(new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.EndTime, existingUsageLog.Duration));
+        }
+        return Task.FromResult(output.AsEnumerable());
     }
 
     public Task<IEnumerable<UsageLog>> GetAllUsageLogsOverlappingIntervalAsync(DateTime start, DateTime end)
     {
-        IEnumerable<UsageLog> usageLogs = storedUsageLogs.Values.Where(u => u.StartTime <= end && start <= u.EndTime).ToList();
-        return Task.FromResult(usageLogs);
+        List<UsageLog> output = new();
+        foreach (var existingUsageLog in storedUsageLogs.Values.Where(u => u.StartTime <= end && start <= u.EndTime))
+        {
+            output.Add(new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.EndTime, existingUsageLog.Duration));
+        }
+        return Task.FromResult(output.AsEnumerable());
     }
 }
