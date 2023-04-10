@@ -78,6 +78,8 @@ public static class MauiProgram
         builder.Services.AddSingleton(typeof(IDataAccess), dataAccess);
 		builder.Services.AddSingleton<TimeFundViewModel>();
 		builder.Services.AddSingleton<TimeFundPage>();
+        builder.Services.AddSingleton<AllActivitiesViewModel>();
+        builder.Services.AddSingleton<AllActivitiesPage>();
 
         return builder.Build();
 	}

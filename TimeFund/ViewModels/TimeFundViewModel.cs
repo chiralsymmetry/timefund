@@ -1,11 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using TimeFund.DataAccess;
 using TimeFund.Models;
-using Activity = TimeFund.Models.Activity;
 
 namespace TimeFund.ViewModels;
 
