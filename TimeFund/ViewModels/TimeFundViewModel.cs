@@ -1,4 +1,3 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -7,20 +6,69 @@ using TimeFund.Models;
 
 namespace TimeFund.ViewModels;
 
-public partial class TimeFundViewModel : ObservableObject
+public class TimeFundViewModel : ObservableViewModel
 {
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(TimerFormat))]
     private TimeSpan currentTimeFund = new();
-    public ObservableCollection<UIActivity> AllActivities { get; set; } = new();
+    public TimeSpan CurrentTimeFund
+    {
+        get { return currentTimeFund; }
+        set
+        {
+            if (currentTimeFund != value)
+            {
+                currentTimeFund = value;
+                OnPropertyChanged(nameof(CurrentTimeFund));
+                OnPropertyChanged(nameof(TimerFormat));
+            }
+        }
+    }
+    private ObservableCollection<UIActivity> allActivities = new();
+    public ObservableCollection<UIActivity> AllActivities
+    {
+        get => allActivities;
+        set
+        {
+            if (allActivities != value)
+            {
+                allActivities = value;
+                OnPropertyChanged(nameof(AllActivities));
+                OnPropertyChanged(nameof(NonNegativeActivities));
+                OnPropertyChanged(nameof(NegativeActivities));
+            }
+        }
+    }
     public IEnumerable<UIActivity> NonNegativeActivities => AllActivities.Where(a => a.Multiplier >= 0).OrderByDescending(a => a.Multiplier);
     public IEnumerable<UIActivity> NegativeActivities => AllActivities.Where(a => a.Multiplier < 0).OrderByDescending(a => a.Multiplier);
-    [ObservableProperty]
+
     private UIActivity currentActivity = UIActivity.ZERO_UIACTIVITY;
+    public UIActivity CurrentActivity
+    {
+        get { return currentActivity; }
+        set
+        {
+            if (currentActivity != value)
+            {
+                currentActivity = value;
+                OnPropertyChanged(nameof(CurrentActivity));
+            }
+        }
+    }
 
     public string TimerFormat => $"{(int)CurrentTimeFund.TotalHours:D2}:{CurrentTimeFund.Minutes:D2}:{CurrentTimeFund.Seconds:D2}";
-    [ObservableProperty]
+
     private string timerButtonText = "Start";
+    public string TimerButtonText
+    {
+        get { return timerButtonText; }
+        set
+        {
+            if (timerButtonText != value)
+            {
+                timerButtonText = value;
+                OnPropertyChanged(nameof(TimerButtonText));
+            }
+        }
+    }
 
     private readonly Stopwatch stopwatch = new();
     private readonly IDataAccess dataAccess;
@@ -91,15 +139,15 @@ public partial class TimeFundViewModel : ObservableObject
         });
     }
 
-    [RelayCommand]
     private void StopTimer()
     {
         TimerCancellationTokenSource.Cancel();
         stopwatch.Stop();
         TimerButtonText = "Start";
     }
+    private RelayCommand? stopTimerCommand;
+    public IRelayCommand StopTimerCommand => stopTimerCommand ??= new RelayCommand(StopTimer);
 
-    [RelayCommand]
     private void ToggleTimer()
     {
         if (stopwatch.IsRunning)
@@ -111,11 +159,14 @@ public partial class TimeFundViewModel : ObservableObject
             StartTimer();
         }
     }
+    private RelayCommand? toggleTimerCommand;
+    public IRelayCommand ToggleTimerCommand => toggleTimerCommand ??= new RelayCommand(ToggleTimer);
 
-    [RelayCommand]
     private void ResetTimer()
     {
         StopTimer();
         CurrentTimeFund = TimeSpan.Zero;
     }
+    private RelayCommand? resetTimerCommand;
+    public IRelayCommand ResetTimerCommand => resetTimerCommand ??= new RelayCommand(ResetTimer);
 }

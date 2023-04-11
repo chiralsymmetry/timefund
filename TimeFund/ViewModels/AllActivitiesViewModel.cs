@@ -1,4 +1,3 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using TimeFund.DataAccess;
@@ -6,7 +5,7 @@ using TimeFund.Models;
 
 namespace TimeFund.ViewModels;
 
-public partial class AllActivitiesViewModel : ObservableObject
+public class AllActivitiesViewModel : ObservableViewModel
 {
     private readonly IDataAccess dataAccess;
 
@@ -48,8 +47,7 @@ public partial class AllActivitiesViewModel : ObservableObject
         SelectedActivity = UIActivity.ZERO_UIACTIVITY;
     }
 
-    [RelayCommand]
-    private void ActivitySelected()
+    private async void ActivitySelected()
     {
         if (SelectedActivity.Id > 0)
         {

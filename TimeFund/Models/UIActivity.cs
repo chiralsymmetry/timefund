@@ -2,7 +2,7 @@
 
 namespace TimeFund.Models;
 
-public partial class UIActivity : ObservableObject
+public partial class UIActivity : ObservableModel
 {
     public static readonly UIActivity ZERO_UIACTIVITY = new(Activity.ZERO_ACTIVITY);
 
@@ -15,9 +15,9 @@ public partial class UIActivity : ObservableObject
         {
             if (Activity.Id != value)
             {
+                Activity.Id = value;
                 OnPropertyChanged(nameof(Id));
             }
-            Activity.Id = value;
         }
     }
 
@@ -28,9 +28,9 @@ public partial class UIActivity : ObservableObject
         {
             if (Activity.Icon != value)
             {
+                Activity.Icon = value;
                 OnPropertyChanged(nameof(Icon));
             }
-            Activity.Icon = value;
         }
     }
 
@@ -41,9 +41,9 @@ public partial class UIActivity : ObservableObject
         {
             if (Activity.Title != value)
             {
+                Activity.Title = value;
                 OnPropertyChanged(nameof(Title));
             }
-            Activity.Title = value;
         }
     }
 
@@ -54,9 +54,10 @@ public partial class UIActivity : ObservableObject
         {
             if (Activity.Description != value)
             {
+                Activity.Description = value;
                 OnPropertyChanged(nameof(Description));
             }
-            Activity.Description = value; }
+        }
     }
 
     public double Multiplier
@@ -66,17 +67,29 @@ public partial class UIActivity : ObservableObject
         {
             if (Activity.Multiplier != value)
             {
+                Activity.Multiplier = value;
                 OnPropertyChanged(nameof(Multiplier));
             }
-            Activity.Multiplier = value; }
+        }
     }
 
-    [ObservableProperty]
     private TimeSpan usage;
+    public TimeSpan Usage
+    {
+        get { return usage; }
+        set
+        {
+            if (usage != value)
+            {
+                usage = value;
+                OnPropertyChanged(nameof(Usage));
+            }
+        }
+    }
 
     public UIActivity(Activity activity, TimeSpan? startingUsage = null)
     {
-        this.Activity = activity;
+        Activity = activity;
         usage = startingUsage ?? TimeSpan.Zero;
     }
 

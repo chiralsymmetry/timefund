@@ -1,18 +1,31 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 using TimeFund.DataAccess;
 using TimeFund.Models;
 
 namespace TimeFund.ViewModels;
 
-public partial class AllUsageLogsViewModel : ObservableObject
+public class AllUsageLogsViewModel : ObservableViewModel
 {
     private readonly IDataAccess dataAccess;
 
     public ObservableCollection<UsageLog> AllUsageLogs { get; set; }
 
-    [ObservableProperty]
     private UsageLog selectedUsageLog = UsageLog.ZERO_USAGELOG;
+    public UsageLog SelectedUsageLog
+    {
+        get
+        {
+            return selectedUsageLog;
+        }
+        set
+        {
+            if (selectedUsageLog != value)
+            {
+                selectedUsageLog = value;
+                OnPropertyChanged(nameof(SelectedUsageLog));
+            }
+        }
+    }
 
     public AllUsageLogsViewModel(IDataAccess dataAccess)
     {
