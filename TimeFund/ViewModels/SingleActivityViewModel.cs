@@ -142,10 +142,14 @@ public class SingleActivityViewModel : ObservableViewModel
     {
         if (ExaminedActivity != Activity.ZERO_ACTIVITY)
         {
-            var response = await Shell.Current.DisplayAlert(
-                "Delete Activity",
-                $"Do you really want to delete the activity \"{ExaminedActivity.Title}\"? It has {TotalUsage.Humanize()} of log time.",
-                "Delete", "Cancel");
+            var response = true;
+            if (ExaminedActivity.Id > 0)
+            {
+                response = await Shell.Current.DisplayAlert(
+                    "Delete Activity",
+                    $"Do you really want to delete the activity \"{ExaminedActivity.Title}\"? It has {TotalUsage.Humanize()} of log time.",
+                    "Delete", "Cancel");
+            }
             if (response)
             {
                 var activity = ExaminedActivity;
