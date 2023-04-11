@@ -5,8 +5,22 @@
              x:Class="TimeFund.Views.AllUsageLogsPage"
              x:DataType="viewmodels:AllUsageLogsViewModel"
              Title="AllUsageLogsPage">
-    <Grid RowDefinitions="*" ColumnDefinitions="*">
-        <ScrollView Grid.Row="0" Grid.Column="0">
+    <Grid RowDefinitions="Auto,Auto,*" ColumnDefinitions="*">
+        <HorizontalStackLayout>
+            <Label Text="From:" VerticalTextAlignment="Center" />
+            <DatePicker Date="{Binding FromLocalDate, Mode=TwoWay}" />
+            <TimePicker Time="{Binding FromLocalTime, Mode=TwoWay}" />
+            <Label Text="To:" VerticalTextAlignment="Center" />
+            <DatePicker Date="{Binding ToLocalDate, Mode=TwoWay}" />
+            <TimePicker Time="{Binding ToLocalTime, Mode=TwoWay}" />
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Grid.Row="1" Grid.Column="0">
+            <Label Text="Activity:" VerticalTextAlignment="Center" />
+            <Picker ItemsSource="{Binding Activities, Mode=OneWay}" SelectedItem="{Binding SelectedActivity, Mode=TwoWay}" ItemDisplayBinding="{Binding Title}" />
+            <Button Text="Apply Filter" Command="{Binding LoadUsageLogsCommand}" />
+            <Button Text="Reset Filter" Command="{Binding ResetFilterCommand}" />
+        </HorizontalStackLayout>
+        <ScrollView Grid.Row="2" Grid.Column="0">
             <CollectionView
                 ItemsSource="{Binding AllUsageLogs, Mode=OneTime}" ItemTemplate="{StaticResource UsageLogTemplate}"
                 SelectedItem="{Binding SelectedUsageLog, Mode=OneWayToSource}"
