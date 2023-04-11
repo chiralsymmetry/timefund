@@ -1,4 +1,4 @@
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using TimeFund.DataAccess;
@@ -89,6 +89,7 @@ public class TimeFundViewModel : ObservableViewModel
         AllActivities.Clear();
         var yesterday = DateTime.UtcNow.AddDays(-1);
         var today = DateTime.UtcNow;
+        var allUIActivities = new List<UIActivity>();
         foreach (var freshActivity in freshActivities)
         {
             var totalUsage = await dataAccess.GetTotalUsageOverlappingIntervalForActivityAsync(freshActivity, yesterday, today);
@@ -100,13 +101,14 @@ public class TimeFundViewModel : ObservableViewModel
                 existingActivity.Multiplier = freshActivity.Multiplier;
                 existingActivity.Usage = totalUsage;
                 // TODO: Check if timer ongoing for this activity, and compensate for usage not yet stored in database.
-                AllActivities.Add(existingActivity);
+                allUIActivities.Add(existingActivity);
             }
             else
             {
-                AllActivities.Add(new UIActivity(freshActivity, totalUsage));
+                allUIActivities.Add(new UIActivity(freshActivity, totalUsage));
             }
         }
+        AllActivities = new(allUIActivities);
         if (!AllActivities.Any(a => a.Id == CurrentActivity.Id))
         {
             CurrentActivity = UIActivity.ZERO_UIACTIVITY;
