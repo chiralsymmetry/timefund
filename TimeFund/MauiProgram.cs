@@ -82,6 +82,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<AllActivitiesPage>();
         builder.Services.AddSingleton<AllUsageLogsViewModel>();
         builder.Services.AddSingleton<AllUsageLogsPage>();
+        builder.Services.AddSingleton<SingleActivityViewModel>();
+        builder.Services.AddSingleton<SingleActivityPage>();
 
         return builder.Build();
 	}

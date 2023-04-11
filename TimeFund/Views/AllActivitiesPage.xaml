@@ -12,6 +12,6 @@
                 SelectedItem="{Binding SelectedActivity, Mode=OneWayToSource}"
                 SelectionMode="Single" SelectionChangedCommand="{Binding ActivitySelectedCommand}" />
         </ScrollView>
-        <Button Grid.Row="1" Grid.Column="0" Text="New" />
+        <Button Grid.Row="1" Grid.Column="0" Text="New" Command="{Binding AddActivityCommand}" />
     </Grid>
 </ContentPage>

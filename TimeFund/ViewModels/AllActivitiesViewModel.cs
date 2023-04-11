@@ -1,7 +1,8 @@
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using TimeFund.DataAccess;
 using TimeFund.Models;
+using TimeFund.Views;
 
 namespace TimeFund.ViewModels;
 
@@ -51,6 +52,16 @@ public class AllActivitiesViewModel : ObservableViewModel
     {
         if (SelectedActivity.Id > 0)
         {
+            await Shell.Current.GoToAsync(nameof(SingleActivityPage), true, new Dictionary<string, object> { { nameof(SingleActivityViewModel.ExaminedActivity), SelectedActivity.Activity } });
         }
     }
+    private RelayCommand? activitySelectedCommand;
+    public IRelayCommand ActivitySelectedCommand => activitySelectedCommand ??= new RelayCommand(ActivitySelected);
+
+    private async void AddActivity()
+    {
+        await Shell.Current.GoToAsync(nameof(SingleActivityPage), true, new Dictionary<string, object> { { nameof(SingleActivityViewModel.ExaminedActivity), new Activity(title: "New Activity") } });
+    }
+    private RelayCommand? addActivityCommand;
+    public IRelayCommand AddActivityCommand => addActivityCommand ??= new RelayCommand(AddActivity);
 }
