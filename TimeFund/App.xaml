@@ -12,6 +12,7 @@
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converters:TimeSpanConverter x:Key="timeSpanConverter" />
+            <converters:LocalTimeConverter x:Key="localTimeConverter" />
             <DataTemplate x:Key="ActivityTemplate" x:DataType="models:UIActivity">
                 <Border Margin="10,2,10,2">
                     <Grid RowDefinitions="*,*" ColumnDefinitions="50,*" HeightRequest="40">
@@ -51,9 +52,9 @@
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="From " />
-                                    <Span Text="{Binding StartTime, Mode=OneWay}" TextDecorations="Underline" />
+                                    <Span Text="{Binding StartTime, Mode=OneWay, Converter={StaticResource localTimeConverter}}" TextDecorations="Underline" />
                                     <Span Text=" to " />
-                                    <Span Text="{Binding EndTime, Mode=OneWay}" TextDecorations="Underline" />
+                                    <Span Text="{Binding EndTime, Mode=OneWay, Converter={StaticResource localTimeConverter}}" TextDecorations="Underline" />
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
