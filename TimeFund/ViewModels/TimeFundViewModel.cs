@@ -8,7 +8,7 @@ namespace TimeFund.ViewModels;
 
 public class TimeFundViewModel : ObservableViewModel
 {
-    private TimeSpan currentTimeFund = new();
+    private TimeSpan currentTimeFund = new(Preferences.Get(nameof(CurrentTimeFund), defaultValue: 0L));
     public TimeSpan CurrentTimeFund
     {
         get { return currentTimeFund; }
@@ -19,6 +19,7 @@ public class TimeFundViewModel : ObservableViewModel
                 currentTimeFund = value;
                 OnPropertyChanged(nameof(CurrentTimeFund));
                 OnPropertyChanged(nameof(TimerFormat));
+                Preferences.Set(nameof(CurrentTimeFund), value.Ticks);
             }
         }
     }
