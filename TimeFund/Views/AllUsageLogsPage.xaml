@@ -24,7 +24,7 @@
             <CollectionView
                 ItemsSource="{Binding AllUsageLogs, Mode=OneTime}" ItemTemplate="{StaticResource UsageLogTemplate}"
                 SelectedItem="{Binding SelectedUsageLog, Mode=OneWayToSource}"
-                SelectionMode="Single" />
+                SelectionMode="Single" SelectionChangedCommand="{Binding UsageLogSelectedCommand}" />
         </ScrollView>
     </Grid>
 </ContentPage>

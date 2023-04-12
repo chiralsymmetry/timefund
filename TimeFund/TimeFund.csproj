@@ -98,6 +98,9 @@
 	  <MauiXaml Update="Views\SingleActivityPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\SingleUsageLogPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\TimeFundPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

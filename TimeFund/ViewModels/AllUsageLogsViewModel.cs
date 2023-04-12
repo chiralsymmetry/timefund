@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using TimeFund.DataAccess;
 using TimeFund.Models;
+using TimeFund.Views;
 
 namespace TimeFund.ViewModels;
 
@@ -130,4 +131,17 @@ public class AllUsageLogsViewModel : ObservableViewModel
 
     private RelayCommand? resetFilterCommand;
     public IRelayCommand ResetFilterCommand => resetFilterCommand ??= new RelayCommand(async () => { Reset(); await LoadUsageLogs(); });
+
+    private async void UsageLogSelected()
+    {
+        if (SelectedUsageLog.Activity.Id > 0)
+        {
+            var usageLog = SelectedUsageLog;
+            SelectedUsageLog = UsageLog.ZERO_USAGELOG;
+            OnPropertyChanged(nameof(SelectedUsageLog));
+            await Shell.Current.GoToAsync(nameof(SingleUsageLogPage), true, new Dictionary<string, object> { { nameof(SingleUsageLogViewModel.ExaminedUsageLog), usageLog } });
+        }
+    }
+    private RelayCommand? usageLogSelectedCommand;
+    public IRelayCommand UsageLogSelectedCommand => usageLogSelectedCommand ??= new RelayCommand(UsageLogSelected);
 }
