@@ -135,8 +135,7 @@ public class SingleActivityViewModel : ObservableViewModel
             Shell.Current.Navigation.PopAsync();
         }
     }
-    private RelayCommand? updateActivityCommand;
-    public IRelayCommand UpdateActivityCommand => updateActivityCommand ?? new RelayCommand(UpdateActivity);
+    public IRelayCommand UpdateActivityCommand => new RelayCommand(UpdateActivity);
 
     private async void DeleteActivity()
     {
@@ -159,6 +158,5 @@ public class SingleActivityViewModel : ObservableViewModel
             }
         }
     }
-    private RelayCommand? deleteActivityCommand;
-    public IRelayCommand DeleteActivityCommand => deleteActivityCommand ?? new RelayCommand(DeleteActivity);
+    public IRelayCommand DeleteActivityCommand => new RelayCommand(DeleteActivity);
 }
