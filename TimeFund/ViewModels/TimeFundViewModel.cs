@@ -75,6 +75,8 @@ public class TimeFundViewModel : ObservableViewModel
     private readonly IDataAccess dataAccess;
 
     private CancellationTokenSource TimerCancellationTokenSource { get; set; } = new();
+    private DateTime startTime = DateTime.MinValue;
+    private TimeSpan activeTime = TimeSpan.Zero;
 
     public TimeFundViewModel(IDataAccess dataAccess)
     {
@@ -122,31 +124,38 @@ public class TimeFundViewModel : ObservableViewModel
         stopwatch.Restart();
         Task.Run(async () =>
         {
-            TimerButtonText = "Stop";
-            while (!TimerCancellationTokenSource.Token.IsCancellationRequested)
+            try
             {
-                stopwatch.Restart();
-                await Task.Delay(1000, TimerCancellationTokenSource.Token);
-                // Waiting 1000 ms... or less, if externally cancelled.
-                CurrentActivity.Usage += TimeSpan.FromSeconds(stopwatch.Elapsed.TotalSeconds);
-                CurrentTimeFund += TimeSpan.FromSeconds(stopwatch.Elapsed.TotalSeconds * CurrentActivity.Multiplier);
-                if (CurrentActivity.Multiplier < 0 && CurrentTimeFund <= TimeSpan.Zero)
+                startTime = DateTime.UtcNow;
+                TimerButtonText = "Stop";
+                while (!TimerCancellationTokenSource.Token.IsCancellationRequested)
                 {
-                    // TODO: Play alarm sound.
-                    TimerCancellationTokenSource.Cancel();
-                    CurrentTimeFund = TimeSpan.Zero;
+                    stopwatch.Restart();
+                    await Task.Delay(1000, TimerCancellationTokenSource.Token);
+                    // Waiting 1000 ms... or less, if externally cancelled.
+                    CurrentActivity.Usage += TimeSpan.FromSeconds(stopwatch.Elapsed.TotalSeconds);
+                    CurrentTimeFund += TimeSpan.FromSeconds(stopwatch.Elapsed.TotalSeconds * CurrentActivity.Multiplier);
+                    if (CurrentActivity.Multiplier < 0 && CurrentTimeFund <= TimeSpan.Zero)
+                    {
+                        // TODO: Play alarm sound.
+                        TimerCancellationTokenSource.Cancel();
+                        CurrentTimeFund = TimeSpan.Zero;
+                    }
                 }
             }
-            stopwatch.Stop();
-            // TODO: Log usage.
+            finally
+            {
+                stopwatch.Stop();
+                TimerButtonText = "Start";
+                activeTime = DateTime.UtcNow - startTime;
+                await dataAccess.InsertUsageLogAsync(CurrentActivity.Activity, startTime, activeTime);
+            }
         });
     }
 
     private void StopTimer()
     {
         TimerCancellationTokenSource.Cancel();
-        stopwatch.Stop();
-        TimerButtonText = "Start";
     }
     private RelayCommand? stopTimerCommand;
     public IRelayCommand StopTimerCommand => stopTimerCommand ??= new RelayCommand(StopTimer);
