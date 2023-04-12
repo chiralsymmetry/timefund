@@ -75,7 +75,7 @@ public class MemoryDataAccess : IDataAccess
 
         if (activity.Id > 0 && storedActivities.ContainsKey(activity.Id))
         {
-            UsageLog usageLog = new(nextUsageLogId++, activity, end, duration);
+            UsageLog usageLog = new(nextUsageLogId++, activity, activity.Multiplier, end, duration);
             storedUsageLogs.Add(usageLog.Id, usageLog);
             insertedRows = 1;
         }
@@ -88,7 +88,7 @@ public class MemoryDataAccess : IDataAccess
         UsageLog? output = null;
         if (storedUsageLogs.TryGetValue(id, out UsageLog? existingUsageLog))
         {
-            output = new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.EndTime, existingUsageLog.Duration);
+            output = new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.Activity.Multiplier, existingUsageLog.EndTime, existingUsageLog.Duration);
         }
         return Task.FromResult(output);
     }
@@ -100,7 +100,7 @@ public class MemoryDataAccess : IDataAccess
         {
             if (existingUsageLog.Activity.Id == activity.Id)
             {
-                output.Add(new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.EndTime, existingUsageLog.Duration));
+                output.Add(new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.Activity.Multiplier, existingUsageLog.EndTime, existingUsageLog.Duration));
             }
         }
         return Task.FromResult(output.OrderBy(u => u.StartTime).AsEnumerable());
@@ -113,7 +113,7 @@ public class MemoryDataAccess : IDataAccess
         {
             if (existingUsageLog.Activity.Id == activity.Id)
             {
-                output.Add(new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.EndTime, existingUsageLog.Duration));
+                output.Add(new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.Activity.Multiplier, existingUsageLog.EndTime, existingUsageLog.Duration));
             }
         }
         return Task.FromResult(output.OrderBy(u => u.StartTime).AsEnumerable());
@@ -168,7 +168,7 @@ public class MemoryDataAccess : IDataAccess
         List<UsageLog> output = new();
         foreach (var existingUsageLog in storedUsageLogs.Values)
         {
-            output.Add(new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.EndTime, existingUsageLog.Duration));
+            output.Add(new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.Activity.Multiplier, existingUsageLog.EndTime, existingUsageLog.Duration));
         }
         return Task.FromResult(output.OrderBy(u => u.StartTime).AsEnumerable());
     }
@@ -178,7 +178,7 @@ public class MemoryDataAccess : IDataAccess
         List<UsageLog> output = new();
         foreach (var existingUsageLog in storedUsageLogs.Values.Where(u => u.StartTime <= end && start <= u.EndTime))
         {
-            output.Add(new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.EndTime, existingUsageLog.Duration));
+            output.Add(new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.Activity.Multiplier, existingUsageLog.EndTime, existingUsageLog.Duration));
         }
         return Task.FromResult(output.OrderBy(u => u.StartTime).AsEnumerable());
     }
