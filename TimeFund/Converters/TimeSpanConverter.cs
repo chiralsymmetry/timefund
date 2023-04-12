@@ -1,5 +1,4 @@
-﻿using Humanizer;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace TimeFund.Converters;
 
@@ -12,11 +11,6 @@ public class TimeSpanConverter : IValueConverter
         int seconds = timeSpan.Seconds;
         var timeSep = CultureInfo.CurrentCulture.DateTimeFormat.TimeSeparator;
         return string.Format("{0:D2}{3}{1:D2}{3}{2:D2}", hours, minutes, seconds, timeSep);
-    }
-
-    public static string HumanFormat(TimeSpan timeSpan)
-    {
-        return timeSpan.Humanize(3, maxUnit: Humanizer.Localisation.TimeUnit.Hour);
     }
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

@@ -12,6 +12,7 @@
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converters:TimeSpanConverter x:Key="timeSpanConverter" />
+            <converters:HumanizedTimeSpanConverter x:Key="humanizedTimeSpanConverter" />
             <converters:LocalTimeConverter x:Key="localTimeConverter" />
             <DataTemplate x:Key="ActivityTemplate" x:DataType="models:UIActivity">
                 <Border Margin="10,2,10,2">
@@ -22,7 +23,14 @@
                             </Image.Source>
                         </Image>
                         <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title, Mode=OneWay}" FontAttributes="Bold" />
-                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding Usage, Mode=OneWay, Converter={StaticResource timeSpanConverter}}" />
+                        <Label Grid.Row="1" Grid.Column="1">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Today: " FontSize="Micro" />
+                                    <Span Text="{Binding Usage, Mode=OneWay, Converter={StaticResource timeSpanConverter}}" FontSize="Micro" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
                         <Label Grid.Row="1" Grid.Column="2" Text="{Binding Multiplier, Mode=OneWay, StringFormat='{0:F2}'}" FontSize="Micro" Margin="4" />
                     </Grid>
                 </Border>
@@ -41,7 +49,14 @@
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        <Label Grid.Row="2" Text="{Binding Duration, Mode=OneWay, Converter={StaticResource timeSpanConverter}}" />
+                        <Label Grid.Row="2">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="= " />
+                                    <Span Text="{Binding Duration, Mode=OneWay, Converter={StaticResource humanizedTimeSpanConverter}}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
                     </Grid>
                 </Border>
             </DataTemplate>
