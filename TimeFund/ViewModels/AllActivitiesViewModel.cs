@@ -52,7 +52,10 @@ public class AllActivitiesViewModel : ObservableViewModel
     {
         if (SelectedActivity.Id > 0)
         {
-            await Shell.Current.GoToAsync(nameof(SingleActivityPage), true, new Dictionary<string, object> { { nameof(SingleActivityViewModel.ExaminedActivity), SelectedActivity.Activity } });
+            var activity = SelectedActivity.Activity;
+            SelectedActivity = UIActivity.ZERO_UIACTIVITY;
+            OnPropertyChanged(nameof(SelectedActivity));
+            await Shell.Current.GoToAsync(nameof(SingleActivityPage), true, new Dictionary<string, object> { { nameof(SingleActivityViewModel.ExaminedActivity), activity } });
         }
     }
     private RelayCommand? activitySelectedCommand;
@@ -60,6 +63,8 @@ public class AllActivitiesViewModel : ObservableViewModel
 
     private async void AddActivity()
     {
+        SelectedActivity = UIActivity.ZERO_UIACTIVITY;
+        OnPropertyChanged(nameof(SelectedActivity));
         await Shell.Current.GoToAsync(nameof(SingleActivityPage), true, new Dictionary<string, object> { { nameof(SingleActivityViewModel.ExaminedActivity), new Activity(title: "New Activity") } });
     }
     private RelayCommand? addActivityCommand;
