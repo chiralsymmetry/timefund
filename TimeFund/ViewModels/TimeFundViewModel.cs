@@ -38,8 +38,8 @@ public class TimeFundViewModel : ObservableViewModel
             }
         }
     }
-    public IEnumerable<UIActivity> NonNegativeActivities => AllActivities.Where(a => a.Multiplier >= 0).OrderByDescending(a => a.Multiplier);
-    public IEnumerable<UIActivity> NegativeActivities => AllActivities.Where(a => a.Multiplier < 0).OrderByDescending(a => a.Multiplier);
+    public IEnumerable<UIActivity> NonNegativeActivities => AllActivities.Where(a => a.Multiplier >= 0);
+    public IEnumerable<UIActivity> NegativeActivities => AllActivities.Where(a => a.Multiplier < 0);
 
     private UIActivity currentActivity = UIActivity.ZERO_UIACTIVITY;
     public UIActivity CurrentActivity

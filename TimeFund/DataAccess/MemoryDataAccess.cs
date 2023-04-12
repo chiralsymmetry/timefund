@@ -66,7 +66,7 @@ public class MemoryDataAccess : IDataAccess
         {
             output.Add(new(item.Id, item.Icon, item.Title, item.Description, item.Multiplier));
         }
-        return Task.FromResult(output.AsEnumerable());
+        return Task.FromResult(output.OrderByDescending(a => a.Multiplier).AsEnumerable());
     }
 
     public Task<int> InsertUsageLog(Activity activity, DateTime end, TimeSpan duration)
@@ -103,7 +103,7 @@ public class MemoryDataAccess : IDataAccess
                 output.Add(new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.EndTime, existingUsageLog.Duration));
             }
         }
-        return Task.FromResult(output.AsEnumerable());
+        return Task.FromResult(output.OrderBy(u => u.StartTime).AsEnumerable());
     }
 
     public Task<IEnumerable<UsageLog>> GetAllUsageLogsOverlappingIntervalForActivityAsync(Activity activity, DateTime start, DateTime end)
@@ -116,7 +116,7 @@ public class MemoryDataAccess : IDataAccess
                 output.Add(new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.EndTime, existingUsageLog.Duration));
             }
         }
-        return Task.FromResult(output.AsEnumerable());
+        return Task.FromResult(output.OrderBy(u => u.StartTime).AsEnumerable());
     }
 
     public Task<TimeSpan> GetTotalUsageForActivityAsync(Activity activity)
@@ -170,7 +170,7 @@ public class MemoryDataAccess : IDataAccess
         {
             output.Add(new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.EndTime, existingUsageLog.Duration));
         }
-        return Task.FromResult(output.AsEnumerable());
+        return Task.FromResult(output.OrderBy(u => u.StartTime).AsEnumerable());
     }
 
     public Task<IEnumerable<UsageLog>> GetAllUsageLogsOverlappingIntervalAsync(DateTime start, DateTime end)
@@ -180,6 +180,6 @@ public class MemoryDataAccess : IDataAccess
         {
             output.Add(new(existingUsageLog.Id, existingUsageLog.Activity, existingUsageLog.EndTime, existingUsageLog.Duration));
         }
-        return Task.FromResult(output.AsEnumerable());
+        return Task.FromResult(output.OrderBy(u => u.StartTime).AsEnumerable());
     }
 }
