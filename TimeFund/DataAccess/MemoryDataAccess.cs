@@ -22,7 +22,7 @@ public class MemoryDataAccess : IDataAccess
         return Task.FromResult(insertedRows);
     }
 
-    public Task<Activity?> GetActivity(int id)
+    public Task<Activity?> GetActivityAsync(int id)
     {
         Activity? output = null;
         if (storedActivities.TryGetValue(id, out Activity? existingActivity))
@@ -69,7 +69,7 @@ public class MemoryDataAccess : IDataAccess
         return Task.FromResult(output.OrderByDescending(a => a.Multiplier).AsEnumerable());
     }
 
-    public Task<int> InsertUsageLog(Activity activity, DateTime end, TimeSpan duration)
+    public Task<int> InsertUsageLogAsync(Activity activity, DateTime end, TimeSpan duration)
     {
         int insertedRows = 0;
 

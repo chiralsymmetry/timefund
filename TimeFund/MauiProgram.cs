@@ -40,39 +40,39 @@ public static class MauiProgram
 
         var time = DateTime.UtcNow.AddDays(-3);
         // Day 1
-        dataAccess.InsertUsageLog(running, time, TimeSpan.FromHours(0.75)).Wait();
+        dataAccess.InsertUsageLogAsync(running, time, TimeSpan.FromHours(0.75)).Wait();
         time += TimeSpan.FromHours(0.75 + 1.27);
-        dataAccess.InsertUsageLog(lifting, time, TimeSpan.FromHours(1.23)).Wait();
+        dataAccess.InsertUsageLogAsync(lifting, time, TimeSpan.FromHours(1.23)).Wait();
         time += TimeSpan.FromHours(1.23 + 2.58);
-        dataAccess.InsertUsageLog(swimming, time, TimeSpan.FromHours(1.51)).Wait();
+        dataAccess.InsertUsageLogAsync(swimming, time, TimeSpan.FromHours(1.51)).Wait();
         time += TimeSpan.FromHours(1.51 + 2.12);
-        dataAccess.InsertUsageLog(videogames, time, TimeSpan.FromHours(2.35)).Wait();
+        dataAccess.InsertUsageLogAsync(videogames, time, TimeSpan.FromHours(2.35)).Wait();
         time += TimeSpan.FromHours(2.35 + 1.46);
-        dataAccess.InsertUsageLog(tv, time, TimeSpan.FromHours(1.73)).Wait();
+        dataAccess.InsertUsageLogAsync(tv, time, TimeSpan.FromHours(1.73)).Wait();
         time += TimeSpan.FromHours(1.73 + 9.64);
         // Day 2
-        dataAccess.InsertUsageLog(running, time, TimeSpan.FromHours(0.85)).Wait();
+        dataAccess.InsertUsageLogAsync(running, time, TimeSpan.FromHours(0.85)).Wait();
         time += TimeSpan.FromHours(0.85 + 1.75);
-        dataAccess.InsertUsageLog(lifting, time, TimeSpan.FromHours(1.30)).Wait();
+        dataAccess.InsertUsageLogAsync(lifting, time, TimeSpan.FromHours(1.30)).Wait();
         time += TimeSpan.FromHours(1.30 + 2.58);
-        dataAccess.InsertUsageLog(swimming, time, TimeSpan.FromHours(1.58)).Wait();
+        dataAccess.InsertUsageLogAsync(swimming, time, TimeSpan.FromHours(1.58)).Wait();
         time += TimeSpan.FromHours(1.58 + 2.09);
-        dataAccess.InsertUsageLog(phone, time, TimeSpan.FromHours(2.41)).Wait();
+        dataAccess.InsertUsageLogAsync(phone, time, TimeSpan.FromHours(2.41)).Wait();
         time += TimeSpan.FromHours(2.41 + 1.53);
-        dataAccess.InsertUsageLog(tv, time, TimeSpan.FromHours(1.75)).Wait();
+        dataAccess.InsertUsageLogAsync(tv, time, TimeSpan.FromHours(1.75)).Wait();
         time += TimeSpan.FromHours(1.75 + 11.41);
         // Day 3
-        dataAccess.InsertUsageLog(running, time, TimeSpan.FromHours(0.65)).Wait();
+        dataAccess.InsertUsageLogAsync(running, time, TimeSpan.FromHours(0.65)).Wait();
         time += TimeSpan.FromHours(0.65 + 2.25);
-        dataAccess.InsertUsageLog(lifting, time, TimeSpan.FromHours(1.13)).Wait();
+        dataAccess.InsertUsageLogAsync(lifting, time, TimeSpan.FromHours(1.13)).Wait();
         time += TimeSpan.FromHours(1.13 + 2.51);
-        dataAccess.InsertUsageLog(swimming, time, TimeSpan.FromHours(1.59)).Wait();
+        dataAccess.InsertUsageLogAsync(swimming, time, TimeSpan.FromHours(1.59)).Wait();
         time += TimeSpan.FromHours(1.59 + 1.75);
-        dataAccess.InsertUsageLog(videogames, time, TimeSpan.FromHours(1.87)).Wait();
+        dataAccess.InsertUsageLogAsync(videogames, time, TimeSpan.FromHours(1.87)).Wait();
         time += TimeSpan.FromHours(1.87 + 2.25);
-        dataAccess.InsertUsageLog(phone, time, TimeSpan.FromHours(2.15)).Wait();
+        dataAccess.InsertUsageLogAsync(phone, time, TimeSpan.FromHours(2.15)).Wait();
         time += TimeSpan.FromHours(2.15 + 1.75);
-        dataAccess.InsertUsageLog(tv, time, TimeSpan.FromHours(1.40)).Wait();
+        dataAccess.InsertUsageLogAsync(tv, time, TimeSpan.FromHours(1.40)).Wait();
         time += TimeSpan.FromHours(1.40);
 
         builder.Services.AddSingleton(typeof(IDataAccess), dataAccess);
