@@ -4,7 +4,7 @@
              xmlns:viewmodels="clr-namespace:TimeFund.ViewModels"
              x:Class="TimeFund.Views.SingleActivityPage"
              x:DataType="viewmodels:SingleActivityViewModel"
-             Title="SingleActivityPage">
+             Title="{Binding ExaminedActivity.Title, Mode=TwoWay}">
     <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*,Auto" ColumnDefinitions="*,*">
         <HorizontalStackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <Label Text="Title:" VerticalOptions="Center" />

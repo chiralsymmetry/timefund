@@ -4,7 +4,7 @@
              xmlns:viewmodels="clr-namespace:TimeFund.ViewModels"
              x:Class="TimeFund.Views.AllUsageLogsPage"
              x:DataType="viewmodels:AllUsageLogsViewModel"
-             Title="AllUsageLogsPage">
+             Title="History">
     <Grid RowDefinitions="Auto,Auto,*" ColumnDefinitions="*">
         <HorizontalStackLayout>
             <Label Text="From:" VerticalTextAlignment="Center" />

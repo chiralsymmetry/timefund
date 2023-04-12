@@ -4,12 +4,12 @@
              xmlns:viewmodels="clr-namespace:TimeFund.ViewModels"
              x:Class="TimeFund.Views.AllActivitiesPage"
              x:DataType="viewmodels:AllActivitiesViewModel"
-             Title="AllActivitiesPage">
+             Title="Activities">
     <Grid RowDefinitions="*,Auto" ColumnDefinitions="*">
         <ScrollView Grid.Row="0" Grid.Column="0">
             <CollectionView
                 ItemsSource="{Binding AllActivities, Mode=OneTime}" ItemTemplate="{StaticResource ActivityTemplate}"
-                SelectedItem="{Binding SelectedActivity, Mode=OneWayToSource}"
+                SelectedItem="{Binding SelectedActivity, Mode=TwoWay}"
                 SelectionMode="Single" SelectionChangedCommand="{Binding ActivitySelectedCommand}" />
         </ScrollView>
         <Button Grid.Row="1" Grid.Column="0" Text="New" Command="{Binding AddActivityCommand}" />

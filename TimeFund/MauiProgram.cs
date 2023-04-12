@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using TimeFund.DataAccess;
 using TimeFund.Models;
 using TimeFund.ViewModels;
@@ -21,7 +20,7 @@ public static class MauiProgram
 			});
 
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
 		var running = new Activity(0, "🏃", "Running", "Running is a great way to get in shape.", 1.0);
 		var lifting = new Activity(0, "🏋️", "Weightlifting", "Weightlifting is a great way to get in shape.", 2.0);
