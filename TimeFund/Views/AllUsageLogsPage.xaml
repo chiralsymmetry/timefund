@@ -20,11 +20,9 @@
             <Button Text="Apply Filter" Command="{Binding LoadUsageLogsCommand}" />
             <Button Text="Reset Filter" Command="{Binding ResetFilterCommand}" />
         </HorizontalStackLayout>
-        <ScrollView Grid.Row="2" Grid.Column="0">
-            <CollectionView
-                ItemsSource="{Binding AllUsageLogs, Mode=OneTime}" ItemTemplate="{StaticResource UsageLogTemplate}"
+        <CollectionView Grid.Row="2" Grid.Column="0"
+                ItemsSource="{Binding AllUsageLogs, Mode=OneWay}" ItemTemplate="{StaticResource UsageLogTemplate}"
                 SelectedItem="{Binding SelectedUsageLog, Mode=OneWayToSource}"
                 SelectionMode="Single" SelectionChangedCommand="{Binding UsageLogSelectedCommand}" />
-        </ScrollView>
     </Grid>
 </ContentPage>

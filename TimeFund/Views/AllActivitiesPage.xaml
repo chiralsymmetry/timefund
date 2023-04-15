@@ -5,13 +5,11 @@
              x:Class="TimeFund.Views.AllActivitiesPage"
              x:DataType="viewmodels:AllActivitiesViewModel"
              Title="Activities">
-    <Grid RowDefinitions="*,Auto" ColumnDefinitions="*">
-        <ScrollView Grid.Row="0" Grid.Column="0">
-            <CollectionView
+    <VerticalStackLayout>
+        <CollectionView
                 ItemsSource="{Binding AllActivities, Mode=OneTime}" ItemTemplate="{StaticResource ActivityTemplate}"
                 SelectedItem="{Binding SelectedActivity, Mode=TwoWay}"
                 SelectionMode="Single" SelectionChangedCommand="{Binding ActivitySelectedCommand}" />
-        </ScrollView>
-        <Button Grid.Row="1" Grid.Column="0" Text="New" Command="{Binding AddActivityCommand}" />
-    </Grid>
+        <Button Text="New" Command="{Binding AddActivityCommand}" />
+    </VerticalStackLayout>
 </ContentPage>

@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
 using TimeFund.DataAccess;
 using TimeFund.Models;
 using TimeFund.Views;
@@ -10,7 +9,19 @@ public class AllUsageLogsViewModel : ObservableViewModel
 {
     private readonly IDataAccess dataAccess;
 
-    public ObservableCollection<UsageLog> AllUsageLogs { get; set; }
+    private List<UsageLog> allUsageLogs = new();
+    public List<UsageLog> AllUsageLogs
+    {
+        get => allUsageLogs;
+        set
+        {
+            if (allUsageLogs != value)
+            {
+                allUsageLogs = value;
+                OnPropertyChanged(nameof(AllUsageLogs));
+            }
+        }
+    }
 
     private UsageLog selectedUsageLog = UsageLog.ZERO_USAGELOG;
     public UsageLog SelectedUsageLog
@@ -87,17 +98,16 @@ public class AllUsageLogsViewModel : ObservableViewModel
         set => ToLocalDateTime = toLocalDateTime.Date + value;
     }
 
-    public List<Activity> Activities { get; }
+    public List<Activity> Activities { get; set; }
     public Activity SelectedActivity { get; set; }
 
     public AllUsageLogsViewModel(IDataAccess dataAccess)
     {
         this.dataAccess = dataAccess;
-        AllUsageLogs = new();
-        Activities = Task.Run(dataAccess.GetAllActivitiesAsync).Result.OrderBy(a => a.Multiplier).ToList();
-        Activities.Insert(0, Activity.ZERO_ACTIVITY);
+        Activities = new() { Activity.ZERO_ACTIVITY };
         SelectedActivity = Activity.ZERO_ACTIVITY;
         Reset();
+        Task.Run(async () => Activities = (await dataAccess.GetAllActivitiesAsync()).OrderBy(a => a.Multiplier).Prepend(Activity.ZERO_ACTIVITY).ToList());
     }
 
     private void Reset()
@@ -119,18 +129,13 @@ public class AllUsageLogsViewModel : ObservableViewModel
         {
             allStoredUsageLogs = await dataAccess.GetAllUsageLogsOverlappingIntervalForActivityAsync(SelectedActivity, FromLocalDateTime.ToUniversalTime(), ToLocalDateTime.ToUniversalTime());
         }
-        AllUsageLogs.Clear();
-        foreach (var storedUsageLog in allStoredUsageLogs)
-        {
-            AllUsageLogs.Add(storedUsageLog);
-        }
+        allUsageLogs = new(allStoredUsageLogs);
+        OnPropertyChanged(nameof(AllUsageLogs));
         SelectedUsageLog = UsageLog.ZERO_USAGELOG;
     }
-    private RelayCommand? loadUsageLogsCommand;
-    public IRelayCommand LoadUsageLogsCommand => loadUsageLogsCommand ??= new RelayCommand(async () => await LoadUsageLogs());
+    public IRelayCommand LoadUsageLogsCommand => new RelayCommand(async () => await LoadUsageLogs());
 
-    private RelayCommand? resetFilterCommand;
-    public IRelayCommand ResetFilterCommand => resetFilterCommand ??= new RelayCommand(async () => { Reset(); await LoadUsageLogs(); });
+    public IRelayCommand ResetFilterCommand => new RelayCommand(async () => { Reset(); await LoadUsageLogs(); });
 
     private async void UsageLogSelected()
     {
@@ -142,6 +147,5 @@ public class AllUsageLogsViewModel : ObservableViewModel
             await Shell.Current.GoToAsync(nameof(SingleUsageLogPage), true, new Dictionary<string, object> { { nameof(SingleUsageLogViewModel.ExaminedUsageLog), usageLog } });
         }
     }
-    private RelayCommand? usageLogSelectedCommand;
-    public IRelayCommand UsageLogSelectedCommand => usageLogSelectedCommand ??= new RelayCommand(UsageLogSelected);
+    public IRelayCommand UsageLogSelectedCommand => new RelayCommand(UsageLogSelected);
 }

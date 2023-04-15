@@ -13,20 +13,16 @@
         <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                 Command="{Binding ToggleTimerCommand}"
                 Text="{Binding TimerButtonText, Mode=OneWay}" />
-        <ScrollView Grid.Row="2" Grid.Column="0">
-            <CollectionView
+        <CollectionView Grid.Row="2" Grid.Column="0"
                 ItemsSource="{Binding NonNegativeActivities, Mode=OneWay}"
                 ItemTemplate="{StaticResource ActivityTemplate}"
                 SelectionMode="Single" SelectedItem="{Binding CurrentActivity, Mode=TwoWay}"
                 SelectionChangedCommand="{Binding StopTimerCommand}" />
-        </ScrollView>
-        <ScrollView Grid.Row="2" Grid.Column="1">
-            <CollectionView
+        <CollectionView Grid.Row="2" Grid.Column="1"
                 ItemsSource="{Binding NegativeActivities, Mode=OneWay}"
                 ItemTemplate="{StaticResource ActivityTemplate}"
                 SelectionMode="Single" SelectedItem="{Binding CurrentActivity, Mode=TwoWay}"
                 SelectionChangedCommand="{Binding StopTimerCommand}" />
-        </ScrollView>
         <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
                 Command="{Binding ResetTimerCommand}"
                 Text="Reset TimeFund" />

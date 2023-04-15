@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using TimeFund.DataAccess;
 using TimeFund.Models;
@@ -23,8 +22,8 @@ public class TimeFundViewModel : ObservableViewModel
             }
         }
     }
-    private ObservableCollection<UIActivity> allActivities = new();
-    public ObservableCollection<UIActivity> AllActivities
+    private List<UIActivity> allActivities = new();
+    public List<UIActivity> AllActivities
     {
         get => allActivities;
         set
@@ -89,7 +88,6 @@ public class TimeFundViewModel : ObservableViewModel
         // Recreating the image XAML element is a bit costly (but not much).
         var idToExistingActivities = AllActivities.ToDictionary(a => a.Id);
         var freshActivities = (await dataAccess.GetAllActivitiesAsync()).ToList();
-        AllActivities.Clear();
         var yesterday = DateTime.UtcNow.AddDays(-1);
         var today = DateTime.UtcNow;
         var allUIActivities = new List<UIActivity>();
@@ -111,7 +109,9 @@ public class TimeFundViewModel : ObservableViewModel
                 allUIActivities.Add(new UIActivity(freshActivity, totalUsage));
             }
         }
-        AllActivities = new(allUIActivities);
+        allActivities.Clear();
+        allActivities.AddRange(allUIActivities);
+        OnPropertyChanged(nameof(AllActivities));
         if (!AllActivities.Any(a => a.Id == CurrentActivity.Id))
         {
             CurrentActivity = UIActivity.ZERO_UIACTIVITY;
@@ -157,8 +157,7 @@ public class TimeFundViewModel : ObservableViewModel
     {
         TimerCancellationTokenSource.Cancel();
     }
-    private RelayCommand? stopTimerCommand;
-    public IRelayCommand StopTimerCommand => stopTimerCommand ??= new RelayCommand(StopTimer);
+    public IRelayCommand StopTimerCommand => new RelayCommand(StopTimer);
 
     private void ToggleTimer()
     {
@@ -171,14 +170,12 @@ public class TimeFundViewModel : ObservableViewModel
             StartTimer();
         }
     }
-    private RelayCommand? toggleTimerCommand;
-    public IRelayCommand ToggleTimerCommand => toggleTimerCommand ??= new RelayCommand(ToggleTimer);
+    public IRelayCommand ToggleTimerCommand => new RelayCommand(ToggleTimer);
 
     private void ResetTimer()
     {
         StopTimer();
         CurrentTimeFund = TimeSpan.Zero;
     }
-    private RelayCommand? resetTimerCommand;
-    public IRelayCommand ResetTimerCommand => resetTimerCommand ??= new RelayCommand(ResetTimer);
+    public IRelayCommand ResetTimerCommand => new RelayCommand(ResetTimer);
 }

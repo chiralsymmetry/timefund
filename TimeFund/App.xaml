@@ -15,8 +15,8 @@
             <converters:HumanizedTimeSpanConverter x:Key="humanizedTimeSpanConverter" />
             <converters:LocalTimeConverter x:Key="localTimeConverter" />
             <DataTemplate x:Key="ActivityTemplate" x:DataType="models:UIActivity">
-                <Border Margin="10,2,10,2">
-                    <Grid RowDefinitions="*,*" ColumnDefinitions="50,*,Auto" HeightRequest="40">
+                <Border Margin="10,2,10,2" HeightRequest="40">
+                    <Grid RowDefinitions="*,*" ColumnDefinitions="50,*,Auto">
                         <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" HeightRequest="30">
                             <Image.Source>
                                 <FontImageSource Glyph="{Binding Icon, Mode=OneWay}" Size="36" />
@@ -36,8 +36,8 @@
                 </Border>
             </DataTemplate>
             <DataTemplate x:Key="UsageLogTemplate" x:DataType="models:UsageLog">
-                <Border Margin="10,2,10,2">
-                    <Grid RowDefinitions="*,*,*" ColumnDefinitions="*" HeightRequest="60">
+                <Border Margin="10,2,10,2" HeightRequest="60">
+                    <VerticalStackLayout>
                         <Label Grid.Row="0" Text="{Binding Activity.Title, Mode=OneWay}" FontAttributes="Bold" />
                         <Label Grid.Row="1">
                             <Label.FormattedText>
@@ -57,7 +57,7 @@
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                    </Grid>
+                    </VerticalStackLayout>
                 </Border>
             </DataTemplate>
         </ResourceDictionary>
