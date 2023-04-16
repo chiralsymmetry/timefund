@@ -9,27 +9,52 @@ namespace TimeFund;
 public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
-	{
-		var builder = MauiApp.CreateBuilder();
-		builder
-			.UseMauiApp<App>()
-			.ConfigureFonts(fonts =>
-			{
-				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-			});
+    {
+        var builder = MauiApp.CreateBuilder();
+        builder
+            .UseMauiApp<App>()
+            .ConfigureFonts(fonts =>
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+            });
 
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
-		var running = new Activity(0, "🏃", "Running", "Running is a great way to get in shape.", 1.0);
-		var lifting = new Activity(0, "🏋️", "Weightlifting", "Weightlifting is a great way to get in shape.", 2.0);
-		var swimming = new Activity(0, "🏊", "Swimming", "Swimming is a great way to get in shape.", 1.5);
-		var videogames = new Activity(0, "🎮", "Video Games", "Video games are a great way to relax.", -1.0);
-		var tv = new Activity(0, "📺", "TV", "TV is a great way to relax.", -1.5);
-		var phone = new Activity(0, "📱", "Phone", "Phone is a great way to relax.", -2.0);
+        var dataAccess = new SqliteDataAccess();
 
-        var dataAccess = new MemoryDataAccess();
+        //PopulateDatabase(dataAccess);
+
+        builder.Services.AddSingleton(typeof(IDataAccess), dataAccess);
+        builder.Services.AddSingleton<TimeFundViewModel>();
+        builder.Services.AddSingleton<TimeFundPage>();
+        builder.Services.AddSingleton<AllActivitiesViewModel>();
+        builder.Services.AddSingleton<AllActivitiesPage>();
+        builder.Services.AddSingleton<AllUsageLogsViewModel>();
+        builder.Services.AddSingleton<AllUsageLogsPage>();
+        builder.Services.AddSingleton<SingleActivityViewModel>();
+        builder.Services.AddSingleton<SingleActivityPage>();
+        builder.Services.AddSingleton<SingleUsageLogViewModel>();
+        builder.Services.AddSingleton<SingleUsageLogPage>();
+
+        return builder.Build();
+    }
+
+    private static void PopulateDatabase(IDataAccess dataAccess)
+    {
+        if (Task.Run(dataAccess.GetAllActivitiesAsync).Result.Any())
+        {
+            return;
+        }
+
+        var running = new Activity(0, "🏃", "Running", "Running is a great way to get in shape.", 1.0);
+        var lifting = new Activity(0, "🏋️", "Weightlifting", "Weightlifting is a great way to get in shape.", 2.0);
+        var swimming = new Activity(0, "🏊", "Swimming", "Swimming is a great way to get in shape.", 1.5);
+        var videogames = new Activity(0, "🎮", "Video Games", "Video games are a great way to relax.", -1.0);
+        var tv = new Activity(0, "📺", "TV", "TV is a great way to relax.", -1.5);
+        var phone = new Activity(0, "📱", "Phone", "Phone is a great way to relax.", -2.0);
+
         dataAccess.InsertActivityAsync(running).Wait();
         dataAccess.InsertActivityAsync(lifting).Wait();
         dataAccess.InsertActivityAsync(swimming).Wait();
@@ -73,19 +98,5 @@ public static class MauiProgram
         time += TimeSpan.FromHours(2.15 + 1.75);
         dataAccess.InsertUsageLogAsync(tv, time, TimeSpan.FromHours(1.40)).Wait();
         time += TimeSpan.FromHours(1.40);
-
-        builder.Services.AddSingleton(typeof(IDataAccess), dataAccess);
-		builder.Services.AddSingleton<TimeFundViewModel>();
-		builder.Services.AddSingleton<TimeFundPage>();
-        builder.Services.AddSingleton<AllActivitiesViewModel>();
-        builder.Services.AddSingleton<AllActivitiesPage>();
-        builder.Services.AddSingleton<AllUsageLogsViewModel>();
-        builder.Services.AddSingleton<AllUsageLogsPage>();
-        builder.Services.AddSingleton<SingleActivityViewModel>();
-        builder.Services.AddSingleton<SingleActivityPage>();
-        builder.Services.AddSingleton<SingleUsageLogViewModel>();
-        builder.Services.AddSingleton<SingleUsageLogPage>();
-
-        return builder.Build();
-	}
+    }
 }

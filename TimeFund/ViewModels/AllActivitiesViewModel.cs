@@ -28,7 +28,7 @@ public class AllActivitiesViewModel : ObservableViewModel
     {
         this.dataAccess = dataAccess;
         var storedActivities = Task.Run(dataAccess.GetAllActivitiesAsync).Result;
-        Task.Run(LoadActivities);
+        //Task.Run(LoadActivities);
     }
 
     public async Task LoadActivities()
@@ -55,8 +55,8 @@ public class AllActivitiesViewModel : ObservableViewModel
                 activitiesToAdd.Add(new UIActivity(freshActivity, totalUsage));
             }
         }
-        allActivities.Clear();
-        allActivities.AddRange(activitiesToAdd);
+        allActivities = new(activitiesToAdd);
+        OnPropertyChanged(nameof(AllActivities));
         SelectedActivity = UIActivity.ZERO_UIACTIVITY;
     }
 
