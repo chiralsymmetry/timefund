@@ -1,4 +1,3 @@
-using TimeFund.Models;
 using TimeFund.ViewModels;
 
 namespace TimeFund.Views;
@@ -17,21 +16,21 @@ public partial class AllUsageLogsPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await allUsageLogsViewModel.LoadActivities();
-        ReplacePicker();
+        await ReplacePicker();
         await allUsageLogsViewModel.LoadUsageLogs();
     }
 
-    private void ReplacePicker()
+    private async Task ReplacePicker()
     {
         // It seems that Pickers' items sources cannot be updated. Workaround: create a new one.
+        await allUsageLogsViewModel.LoadActivities();
         var oldPicker = ActivityPicker;
         var newPicker = new Picker();
         newPicker.SetBinding(Picker.ItemsSourceProperty, new Binding("Activities") { Mode = BindingMode.OneTime });
         newPicker.SetBinding(Picker.SelectedItemProperty, new Binding("SelectedActivity") { Mode = BindingMode.TwoWay });
         newPicker.ItemDisplayBinding = new Binding("Title");
         newPicker.BindingContext = oldPicker.BindingContext;
-        newPicker.SelectedItem = allUsageLogsViewModel.Activities.FirstOrDefault(Activity.ZERO_ACTIVITY);
+        newPicker.SelectedItem = allUsageLogsViewModel.SelectedActivity;
 
         var parent = (Layout)ActivityPicker.Parent;
         var index = parent.Children.IndexOf(ActivityPicker);

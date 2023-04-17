@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using System.Linq;
 using TimeFund.DataAccess;
 using TimeFund.Models;
 using TimeFund.Views;
@@ -133,6 +134,12 @@ public class AllUsageLogsViewModel : ObservableViewModel
         activities.Clear();
         activities.AddRange(newActivities);
         OnPropertyChanged(nameof(Activities));
+        var previouslySelectedActivity = SelectedActivity;
+        SelectedActivity = activities.FirstOrDefault(a => a.Id == previouslySelectedActivity.Id, Activity.ZERO_ACTIVITY);
+        if (previouslySelectedActivity.Id != SelectedActivity.Id)
+        {
+            OnPropertyChanged(nameof(SelectedActivity));
+        }
     }
 
     public async Task LoadUsageLogs()
