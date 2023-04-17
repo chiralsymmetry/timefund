@@ -26,10 +26,7 @@ public class AllUsageLogsViewModel : ObservableViewModel
     private UsageLog selectedUsageLog = UsageLog.ZERO_USAGELOG;
     public UsageLog SelectedUsageLog
     {
-        get
-        {
-            return selectedUsageLog;
-        }
+        get => selectedUsageLog;
         set
         {
             if (selectedUsageLog != value)
@@ -98,13 +95,26 @@ public class AllUsageLogsViewModel : ObservableViewModel
         set => ToLocalDateTime = toLocalDateTime.Date + value;
     }
 
-    public List<Activity> Activities { get; set; }
+    private List<Activity> activities = new();
+    public List<Activity> Activities
+    {
+        get => activities;
+        set
+        {
+            if (activities != value)
+            {
+                activities = value;
+                OnPropertyChanged(nameof(Activities));
+            }
+        }
+    }
     public Activity SelectedActivity { get; set; }
 
     public AllUsageLogsViewModel(IDataAccess dataAccess)
     {
         this.dataAccess = dataAccess;
-        Activities = new() { Activity.ZERO_ACTIVITY };
+        activities = new() { Activity.ZERO_ACTIVITY };
+        OnPropertyChanged(nameof(Activities));
         SelectedActivity = Activity.ZERO_ACTIVITY;
         Reset();
         Task.Run(async () => Activities = (await dataAccess.GetAllActivitiesAsync()).OrderBy(a => a.Multiplier).Prepend(Activity.ZERO_ACTIVITY).ToList());
