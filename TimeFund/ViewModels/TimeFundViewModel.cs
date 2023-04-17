@@ -112,6 +112,8 @@ public class TimeFundViewModel : ObservableViewModel
         allActivities.Clear();
         allActivities.AddRange(allUIActivities);
         OnPropertyChanged(nameof(AllActivities));
+        OnPropertyChanged(nameof(NonNegativeActivities));
+        OnPropertyChanged(nameof(NegativeActivities));
         if (!AllActivities.Any(a => a.Id == CurrentActivity.Id))
         {
             CurrentActivity = UIActivity.ZERO_UIACTIVITY;
