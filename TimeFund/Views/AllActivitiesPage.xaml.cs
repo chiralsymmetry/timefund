@@ -13,9 +13,9 @@ public partial class AllActivitiesPage : ContentPage
         this.allActivitiesViewModel = allActivitiesViewModel;
     }
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
-        Task.Run(allActivitiesViewModel.LoadActivities);
+        await allActivitiesViewModel.LoadActivities();
     }
 }

@@ -117,7 +117,6 @@ public class AllUsageLogsViewModel : ObservableViewModel
         OnPropertyChanged(nameof(Activities));
         SelectedActivity = Activity.ZERO_ACTIVITY;
         Reset();
-        Task.Run(async () => Activities = (await dataAccess.GetAllActivitiesAsync()).OrderBy(a => a.Multiplier).Prepend(Activity.ZERO_ACTIVITY).ToList());
     }
 
     private void Reset()
@@ -126,6 +125,14 @@ public class AllUsageLogsViewModel : ObservableViewModel
         OnPropertyChanged(nameof(SelectedActivity));
         FromLocalDateTime = DateTime.Now.AddMonths(-1);
         ToLocalDateTime = DateTime.Now;
+    }
+
+    public async Task LoadActivities()
+    {
+        var newActivities = (await dataAccess.GetAllActivitiesAsync()).OrderBy(a => a.Multiplier).Prepend(Activity.ZERO_ACTIVITY).ToList();
+        activities.Clear();
+        activities.AddRange(newActivities);
+        OnPropertyChanged(nameof(Activities));
     }
 
     public async Task LoadUsageLogs()

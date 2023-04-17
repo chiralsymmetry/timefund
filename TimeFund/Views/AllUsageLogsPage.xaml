@@ -16,7 +16,7 @@
         </HorizontalStackLayout>
         <HorizontalStackLayout Grid.Row="1" Grid.Column="0">
             <Label Text="Activity:" VerticalTextAlignment="Center" />
-            <Picker ItemsSource="{Binding Activities, Mode=OneWay}" SelectedItem="{Binding SelectedActivity, Mode=TwoWay}" ItemDisplayBinding="{Binding Title}" />
+            <Picker x:Name="ActivityPicker" />
             <Button Text="Apply Filter" Command="{Binding LoadUsageLogsCommand}" />
             <Button Text="Reset Filter" Command="{Binding ResetFilterCommand}" />
         </HorizontalStackLayout>

@@ -14,9 +14,9 @@ public partial class TimeFundPage : ContentPage
         this.timeFundViewModel = timeFundViewModel;
     }
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
-        Task.Run(timeFundViewModel.LoadActivities);
+        await timeFundViewModel.LoadActivities();
     }
 }
