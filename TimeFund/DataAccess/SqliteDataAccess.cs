@@ -46,6 +46,11 @@ public class SqliteDataAccess : IDataAccess
     public async Task<int> DeleteActivityAsync(Activity activity)
     {
         await Init().ConfigureAwait(false);
+        var usageLogs = await database!.Table<SqliteUsageLog>().Where(u => u.ActivityId == activity.Id).ToListAsync().ConfigureAwait(false);
+        foreach (var usageLog in usageLogs)
+        {
+            await database.DeleteAsync(usageLog).ConfigureAwait(false);
+        }
         return await database!.DeleteAsync(activity).ConfigureAwait(false);
     }
 

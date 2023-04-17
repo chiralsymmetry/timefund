@@ -52,6 +52,10 @@ public class MemoryDataAccess : IDataAccess
     public Task<int> DeleteActivityAsync(Activity activity)
     {
         int deletedRows = 0;
+        foreach (var usageLog in storedUsageLogs.Values.Where(ul => ul.Activity.Id == activity.Id).ToList())
+        {
+            storedUsageLogs.Remove(usageLog.Id);
+        }
         if (storedActivities.Remove(activity.Id))
         {
             deletedRows = 1;
